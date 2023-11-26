@@ -10,12 +10,14 @@ model = palm.get_model("models/text-bison-001")
 
 
 @db.persist(model="palm", db=db.get_db())
-def generate_text(prompt):
-    completion = palm.generate_text(
-        model=model,
-        prompt=prompt,
-        temperature=0,
-        max_output_tokens=8096,
-    )
+def generate_text(prompt, **kwargs):
+    params = {
+        "model": model,
+        "prompt": prompt,
+        "temperature": 0,
+        "max_output_tokens": 8096,
+    }
+    params.update(kwargs)
 
+    completion = palm.generate_text(**params)
     return completion.result
